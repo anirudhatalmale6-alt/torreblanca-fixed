@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Torre Blanca – Piso 2 / Apto 01</title>
+  <link rel="stylesheet" href="./styles.css?v=1766970774" />
+<style>
+/* FIX: quitar underline tipo link en botones */
+.btnrow a, .btnrow a:visited, .btnrow a:hover, .btnrow a:active, a.btn, a#btnAllPhotos, a#btnPlanoPrecio, a#btnUbicacion{ text-decoration:none !important; border-bottom:0 !important; }
+</style>
+</head>
+<body data-apto-name="APARTAMENTO 1">
+
+  <div class="logo-torre-blanca" aria-hidden="true">
+    <img src="../assets/logo-torre-blanca-white.png" alt="Torre Blanca">
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="hero-instructions" id="instructions">
+        Seleccioná un área para ver el detalle.
+      </p>
+
+      <div class="stage" aria-label="Apartamento interactivo">
+        <div class="img-stack" id="stack">
+
+          <img class="img base" src="./assets/apto-02/apto-02-base.jpg" alt="Apto 01 – Vista superior" />
+          <img class="img overlay" id="overlay" src="./assets/apto-02/apto-02-base.jpg" alt="" />
+
+          <!-- HOTSPOTS -->
+          <button class="spot" data-area="sala" style="left:56%;top:33%;width:15%;height:34%;" aria-label="Sala"></button>
+          <button class="spot" data-area="terraza" style="left:77%;top:4%;width:14%;height:92%;" aria-label="Terraza"></button>
+          <button class="spot" data-area="cocina-comedor" style="left:20%;top:39%;width:36%;height:38%;" aria-label="Cocina / Comedor"></button>
+          <button class="spot" data-area="master-bedroom" style="left:62%;top:66%;width:15%;height:30%;" aria-label="Master Bedroom"></button>
+          <button class="spot" data-area="habitacion-2" style="left:67%;top:4%;width:10%;height:29%;" aria-label="Habitación 2"></button>
+          <button class="spot" data-area="habitacion-3" style="left:33%;top:-7%;width:13%;height:40%;" aria-label="Habitación 3"></button>
+          <button class="spot" data-area="lavanderia-y-cuarto-muchacha" style="left:15%;top:72%;width:18%;height:28%;" aria-label="Lavandería y Cuarto Muchacha"></button>
+          <button class="spot" data-area="elevador" style="left:19%;top:22%;width:7%;height:17%;" aria-label="Elevador"></button>
+          <button class="spot" data-area="cubo-de-luz" style="left:46%;top:0.0%;width:9%;height:15%;" aria-label="Cubo de Iluminación (Superior)"></button>
+          <button class="spot" data-area="cubo-de-luz" style="left:32.5%;top:71.0%;width:9.0%;height:29.0%;" aria-label="Cubo de Iluminación (Inferior)"></button>
+          <button class="spot" data-area="todos-los-banos" style="left:41%;top:68%;width:9%;height:30%;" aria-label="Baño (Master)"></button>
+          <button class="spot" data-area="todos-los-banos" style="left:25.5%;top:3.5%;width:7%;height:17%;" aria-label="Baño (Arriba 1)"></button>
+          <button class="spot" data-area="todos-los-banos" style="left:55.5%;top:1.5%;width:11%;height:13%;" aria-label="Baño (Arriba 2)"></button>
+          <button class="spot" data-area="todos-los-banos" style="left:2.5%;top:47.5%;width:13%;height:14%;" aria-label="Baño (Izq)"></button>
+          <button class="spot" data-area="todos-los-banos" style="left:46.5%;top:23%;width:5%;height:10%;" aria-label="Baño (Nuevo 5)"></button>
+          <button class="spot" data-area="todos-los-closets" style="left:50%;top:78%;width:12%;height:20%;" aria-label="Closet 1"></button>
+          <button class="spot" data-area="todos-los-closets" style="left:26%;top:23%;width:7%;height:16%;" aria-label="Closet 2"></button>
+          <button class="spot" data-area="todos-los-closets" style="left:56%;top:24%;width:10%;height:9%;" aria-label="Closet 3"></button>
+          <button class="spot" data-area="gradas" style="left:3%;top:4%;width:16%;height:43%;" aria-label="Gradas"></button>
+
+          <div class="hud is-idle" id="hud">
+            <div class="hud-title" id="hudTitle">PASA EL MOUSE POR UN ÁREA</div>
+            <div class="hud-sub" id="hudSub">Tap / click para ver detalle</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="btnAllPhotos">TODAS LAS FOTOS</button>
+        <a class="btn btn-danger" href="./assets/apto-02/apto-02-plano.pdf" target="_blank" rel="noopener">PLANO Y PRECIO</a>
+        <a class="btn" href="./assets/apto-02/apto-02-ubicacion.pdf" target="_blank" rel="noopener">UBICACIÓN</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- GALLERY PANEL -->
+  <section class="panel" id="galleryPanel" aria-hidden="true">
+    <header class="panelTop">
+      <button class="btn btn-ghost" id="galleryBack">← Back</button>
+      <div class="panelTitle" id="galleryTitle">APARTAMENTO</div>
+    </header>
+    <div class="panelBody">
+      <div class="cards" id="galleryCards"></div>
+    </div>
+  </section>
+
+  <!-- DETAIL PANEL -->
+  <section class="panel" id="detailPanel" aria-hidden="true">
+    <header class="panelTop">
+      <button class="btn btn-ghost" id="detailBack">← Back</button>
+      <div class="panelTitle" id="detailTitle">DETALLE</div>
+    </header>
+
+    <div class="panelBody">
+      <figure class="heroFigure" id="heroFigure">
+        <img id="detailHeroImg" alt="">
+        <button class="heroHint" id="heroHint" type="button">Click para ampliar</button>
+      </figure>
+
+      <div class="detailText card" id="detailText"></div>
+
+      <div class="thumbs" id="detailGallery"></div>
+
+      <div class="loading" id="detailLoading" hidden>Cargando…</div>
+    </div>
+  </section>
+
+  <!-- IMAGE VIEWER -->
+  <section class="panel viewer" id="viewerPanel" aria-hidden="true">
+    <header class="panelTop">
+      <button class="btn btn-ghost" id="viewerBack">← Back</button>
+      <div class="panelTitle" id="viewerTitle">FOTO</div>
+    </header>
+    <div class="viewerBody">
+      <img id="viewerImg" alt="">
+    </div>
+  </section>
+
+  <!-- Mammoth para leer Word en browser -->
+  <script src="https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js"></script>
+  <script src="./app.js?v=1766970774"></script>
+
+  <div id="gallery" style="display:none"></div>
+</body>
+</html>

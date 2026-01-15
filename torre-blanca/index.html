@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Torre Blanca</title>
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- REDIRECCION AUTOMATICA A MOBILE -->
+  <script>
+    (function () {
+      try {
+        const isMobile = !window.matchMedia("(hover: hover)").matches;
+        if (isMobile) {
+          window.location.replace("/torre-blanca-m/");
+        }
+      } catch(e){}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- LOGO -->
+  <div class="logo-torre-blanca" aria-hidden="true">
+    <img src="./assets/logo-torre-blanca-white.png" alt="Torre Blanca">
+  </div>
+
+  <main class="wrap">
+    <section class="hero" id="explorar">
+      <div class="hero-text">
+        <p>Pasa el mouse por cada piso para ver el detalle. Click para entrar.</p>
+      </div>
+
+      <div class="stage">
+        <div class="img-stack">
+          <img class="img base" src="./assets/edificio-base.png" alt="Torre Blanca">
+          <img class="img overlay" id="overlay" src="./assets/edificio-base.png" alt="">
+
+          <button class="spot" data-floor="1" style="left:2.83%;top:60.96%;width:96.34%;height:39.04%"></button>
+          <button class="spot" data-floor="2" style="left:2.10%;top:45.06%;width:96.88%;height:30.38%"></button>
+          <button class="spot" data-floor="3" style="left:2.83%;top:29.56%;width:96.14%;height:28.34%"></button>
+          <button class="spot" data-floor="4" style="left:3.66%;top:12.33%;width:89.40%;height:20.90%"></button>
+          <button class="spot" data-floor="5" style="left:6.10%;top:0%;width:76.32%;height:17.74%"></button>
+
+          <div class="hud" id="hud">
+            <div class="hud-title" id="hudTitle">PASA EL MOUSE POR UN PISO</div>
+            <div class="hud-sub" id="hudSub">Click para entrar</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Torre Blanca</title>
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- REDIRECCION AUTOMATICA A MOBILE -->
+  <script>
+    (function () {
+      try {
+        const isMobile = !window.matchMedia("(hover: hover)").matches;
+        if (isMobile) {
+        }
+      } catch(e){}
+    })();
+  </script>
+
+<style id="tbm-hud-mobile-fix">
+@media (max-width: 900px){
+  .hud{
+    position: relative !important;   /* override de fixed/absolute */
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: min(92vw, 760px) !important;
+    margin: 14px auto 0 !important;
+  }
+}
+</style>
+
+
+<script id="tbm-hud-move">
+(function(){
+  function isMobile(){ return window.matchMedia && window.matchMedia("(max-width: 900px)").matches; }
+
+  function moveHudBelow(){
+    if(!isMobile()) return;
+
+    var hud = document.querySelector(".hud") || document.getElementById("hud");
+    if(!hud) return;
+
+    // candidatos del contenedor del edificio/imagen
+    var stage = document.querySelector(".stage") ||
+                document.querySelector(".hero") ||
+                document.querySelector(".wrap") ||
+                document.body;
+
+    // dentro del stage, buscamos el bloque que contiene la imagen/edificio
+    var imgWrap = stage.querySelector(".img-stack") ||
+                  stage.querySelector(".frame") ||
+                  stage.querySelector(".map") ||
+                  stage.querySelector("picture")?.parentElement ||
+                  stage.querySelector("img")?.parentElement ||
+                  null;
+
+    if(!imgWrap) return;
+
+    // insertar HUD justo después del bloque del edificio
+    if(hud.parentElement){
+      hud.parentElement.removeChild(hud);
+    }
+    imgWrap.insertAdjacentElement("afterend", hud);
+  }
+
+  window.addEventListener("DOMContentLoaded", moveHudBelow);
+  window.addEventListener("load", moveHudBelow);
+  window.addEventListener("resize", function(){ setTimeout(moveHudBelow, 50); });
+})();
+</script>
+
+<style id="tbm-hud-color">
+@media (max-width: 900px){
+  .hud{
+    background: linear-gradient(180deg,#FFD84D 0%,#FFC400 100%) !important;
+    color:#000 !important;
+    border:1px solid rgba(0,0,0,.25) !important;
+    box-shadow:0 10px 26px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.6) !important;
+    border-radius:22px !important;
+    padding:22px 20px !important;
+    margin-top:22px !important;
+  }
+
+  /* TODO EL TEXTO NEGRO */
+  .hud *,
+  .hud h1,.hud h2,.hud h3,
+  .hud p,.hud span,.hud small{
+    color:#000 !important;
+    opacity:1 !important;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+  <!-- LOGO -->
+  <div class="logo-torre-blanca" aria-hidden="true">
+    <img src="./assets/logo-torre-blanca-white.png" alt="Torre Blanca">
+  </div>
+
+  <main class="wrap">
+    <section class="hero" id="explorar">
+      <div class="hero-text">
+        <p>Pasa el mouse por cada piso para ver el detalle. Click para entrar.</p>
+      </div>
+
+      <div class="stage">
+        <div class="img-stack">
+          <img class="img base" src="./assets/edificio-base.png" alt="Torre Blanca">
+          <img class="img overlay" id="overlay" src="./assets/edificio-base.png" alt="">
+
+          <button class="spot" data-floor="1" style="left:2.83%;top:60.96%;width:96.34%;height:39.04%"></button>
+          <button class="spot" data-floor="2" style="left:2.10%;top:45.06%;width:96.88%;height:30.38%"></button>
+          <button class="spot" data-floor="3" style="left:2.83%;top:29.56%;width:96.14%;height:28.34%"></button>
+          <button class="spot" data-floor="4" style="left:3.66%;top:12.33%;width:89.40%;height:20.90%"></button>
+          <button class="spot" data-floor="5" style="left:6.10%;top:0%;width:76.32%;height:17.74%"></button>
+
+          <div class="hud" id="hud">
+            <div class="hud-title" id="hudTitle">PASA EL MOUSE POR UN PISO</div>
+            <div class="hud-sub" id="hudSub">Click para entrar</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

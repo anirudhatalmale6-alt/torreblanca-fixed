@@ -1,0 +1,31 @@
+/* ===== TORRE BLANCA MOBILE: MAPA (AZUL) + HUD (AMARILLO) SEPARADOS ===== */
+@media (max-width: 900px){
+
+  /* Asegurar orden vertical en mobile */
+  .hero{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+  }
+
+  /* MAPA */
+  .stage{ order: 1 !important; width:100% !important; }
+
+  /* Texto gris (si existe) */
+  .hero-instructions{ order: 2 !important; margin: 10px 0 12px !important; }
+
+  /* HUD (AMARILLO) ya desprendido por JS y puesto como bloque debajo del mapa */
+  .hud.hud-mobile-detached{
+    order: 3 !important;
+    position: static !important;
+    margin: 12px 12px 0 !important;  /* <-- separación real debajo del mapa */
+    width: calc(100% - 24px) !important;
+    max-width: 100% !important;
+    border-radius: 18px !important;
+    pointer-events: auto !important;
+    z-index: 1 !important;
+  }
+
+  /* BOTONES */
+  .actions{ order: 4 !important; width:100% !important; margin: 14px 12px 0 !important; }
+}

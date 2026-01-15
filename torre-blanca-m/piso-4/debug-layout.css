@@ -1,0 +1,51 @@
+/* ===== TORRE BLANCA – DEBUG LAYOUT ===== */
+/* Activar con ?debug=1 */
+
+body.debug *{
+  box-sizing: border-box !important;
+}
+
+body.debug .stage{
+  outline: 3px solid #00e5ff !important;
+}
+body.debug .stage::after{
+  content: "1 · MAPA";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #00e5ff;
+  color:#000;
+  font: 700 12px system-ui;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+body.debug .hud{
+  outline: 3px solid #ffd400 !important;
+}
+body.debug .hud::after{
+  content: "2 · TEXTO (AMARILLO)";
+  position: absolute;
+  top: -18px;
+  left: 6px;
+  background: #ffd400;
+  color:#000;
+  font: 700 12px system-ui;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+body.debug .actions{
+  outline: 3px solid #ff3b3b !important;
+}
+body.debug .actions::after{
+  content: "3 · BOTONES";
+  position: absolute;
+  top: -18px;
+  left: 6px;
+  background: #ff3b3b;
+  color:#fff;
+  font: 700 12px system-ui;
+  padding: 2px 6px;
+  border-radius: 6px;
+}

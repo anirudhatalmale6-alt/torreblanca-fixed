@@ -1,0 +1,46 @@
+TORRE BLANCA - CHANGES LOG
+===========================
+Date: 2026-01-15
+
+ISSUES FIXED:
+-------------
+
+1. PISO-3 (Desktop) - app.js
+   - PROBLEM: Bug in onLeave() function was closing all panels when mouse left
+     a hotspot area. This caused galleries and detail panels to close unexpectedly.
+   - FIX: Removed the erroneous panel reset code from onLeave() function
+     (lines 156-160). Panels should only close via Back button clicks,
+     not on mouse leave.
+   - Also cleaned up indentation in bind() function for panel initialization.
+
+2. MOBILE VERSION - Missing Assets
+   - PROBLEM: piso-4/assets/apto-03/ folder was empty
+   - PROBLEM: piso-5/assets/apto-04/ folder was empty
+   - PROBLEM: piso-5/assets/ contained wrong folder (apto-02)
+   - FIX: Copied correct assets from desktop version:
+     * torre-blanca/piso-4/assets/apto-03/* -> torre-blanca-m/piso-4/assets/apto-03/
+     * torre-blanca/piso-5/assets/apto-04/* -> torre-blanca-m/piso-5/assets/apto-04/
+   - FIX: Removed incorrect apto-02 folder from torre-blanca-m/piso-5/assets/
+
+3. CLEANUP
+   - Removed all .bak.* backup files from both torre-blanca and torre-blanca-m
+
+KNOWN ISSUES (pre-existing, not introduced by this fix):
+--------------------------------------------------------
+- apto-03-mask-lavanderia-y-cuarto-muchacha.jpg.filepart is incomplete/corrupted
+  in piso-4. The app handles this gracefully (doesn't show mask if file missing).
+
+FILES MODIFIED:
+---------------
+- torre-blanca/piso-3/app.js (bug fix)
+- torre-blanca-m/piso-4/assets/apto-03/* (assets added)
+- torre-blanca-m/piso-5/assets/apto-04/* (assets added)
+- torre-blanca-m/piso-5/assets/apto-02/ (folder removed)
+- Various *.bak.* files removed
+
+TESTING NOTES:
+--------------
+- All floors (2-5) should now behave identically
+- Gallery panels should stay open until Back button is clicked
+- Detail panels should display photos and text correctly
+- Mobile version now has correct assets for piso-4 and piso-5

@@ -1,0 +1,82 @@
+/* Torre Blanca - Mobile overrides (solo mobile) */
+@media (max-width: 900px){
+
+  body{ overflow-x:hidden; }
+
+  /* LOGO: visible completo, centrado, sin recorte */
+  .logo-torre-blanca{
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+    pointer-events: none !important;
+    margin: 14px 0 8px !important;
+  }
+  .logo-torre-blanca img{
+    height: 120px !important;
+    width: auto !important;
+    max-width: 92vw !important;
+    object-fit: contain !important;
+    opacity: .95 !important;
+  }
+
+  /* WRAP: quitar padding-top gigante */
+  .wrap{ padding: 0 12px 24px !important; }
+
+  /* Orden: foto -> texto -> botones */
+  .hero{
+    padding: 10px 0 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .stage{ order: 1 !important; width: 100% !important; }
+  .hero-instructions{
+    order: 2 !important;
+    margin: 10px 0 12px !important;
+    font-size: 14px !important;
+    text-align: center !important;
+    opacity: .9 !important;
+  }
+  .actions{ order: 3 !important; }
+
+  /* Stack full width */
+  .img-stack{ width: 100% !important; max-width: 100% !important; }
+
+  /* HUD: que no tape */
+  .hud{ left: 10px !important; right: 10px !important; bottom: 10px !important; }
+  .hud-title{ font-size: 13px !important; }
+  .hud-sub{ font-size: 12px !important; }
+
+  /* BOTONES: 1 columna (full width) */
+  .actions{
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+  .actions .btn{
+    width: 100% !important;
+    justify-content: center !important;
+    border: 1px solid rgba(255,255,255,.22) !important;
+    background: rgba(255,255,255,.12) !important;
+    color: #fff !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35) !important;
+    padding: 14px 16px !important;
+    font-size: 16px !important;
+  }
+  .actions .btn:hover{ background: rgba(255,255,255,.18) !important; }
+  .actions .btn-danger{
+    background: linear-gradient(90deg, rgba(255,44,44,.95), rgba(255,149,0,.95)) !important;
+    border: 0 !important;
+  }
+
+  /* Panels full screen */
+  .panel{ padding: 10px !important; }
+  .panelTop{ padding: 10px !important; }
+  .panelBody{ padding: 10px !important; }
+
+  /* Thumbs en 2 columnas */
+  .thumbs{ grid-template-columns: repeat(2, 1fr) !important; }
+}
