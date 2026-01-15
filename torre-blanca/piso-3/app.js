@@ -1,330 +1,323 @@
-/* ============================
-   TORRE BLANCA - Piso 3 (Apto-02)
-   - Hover: muestra mask en #overlay
-   - Click: abre panel detalle/info
-   - "Todas las fotos": grid por áreas
-   - Texto: lee .docx via Mammoth
-   ============================ */
+const overlay = document.getElementById("overlay");
+const hud = document.getElementById("hud");
+const hudTitle = document.getElementById("hudTitle");
+const hudSub = document.getElementById("hudSub");
 
-(() => {
-  const APT = "apto-02";
-  const ASSETS = `./assets/${APT}/`;
-  const BASE_IMG = `${ASSETS}${APT}-base.jpg`;
+const btnAllPhotos = document.getElementById("btnAllPhotos");
 
-  // ====== AREAS ======
-  const AREAS = {
-    "cocina-comedor": { title: "COCINA / COMEDOR", mask: `${APT}-mask-cocina-comedor.jpg`, kind: "detail" },
-    "sala":           { title: "SALA",             mask: `${APT}-mask-sala.jpg`,           kind: "detail" },
-    "terraza":        { title: "TERRAZA",          mask: `${APT}-mask-terraza.jpg`,        kind: "detail" },
-    "master-bedroom": { title: "MASTER BEDROOM",   mask: `${APT}-mask-master-bedroom.jpg`, kind: "detail" },
-    "habitacion-2":   { title: "HABITACIÓN 2",     mask: `${APT}-mask-habitacion-2.jpg`,   kind: "detail" },
-    "habitacion-3":   { title: "HABITACIÓN 3",     mask: `${APT}-mask-habitacion-3.jpg`,   kind: "detail" },
+const galleryPanel = document.getElementById("galleryPanel");
+const galleryCards = document.getElementById("galleryCards");
+const galleryBack = document.getElementById("galleryBack");
+const galleryTitle = document.getElementById("galleryTitle");
 
-    // informativos
-    "cubo-de-luz": { title: "CUBO DE ILUMINACIÓN", mask: `${APT}-mask-cubo-de-luz.jpg`, kind: "info" },
-    "elevador":    { title: "ELEVADOR",            mask: `${APT}-mask-elevador.jpg`,    kind: "info" },
-    "gradas":      { title: "GRADAS",              mask: `${APT}-mask-gradas.jpg`,      kind: "info" },
-    "todos-los-banos":   { title: "TODOS LOS BAÑOS",   mask: `${APT}-mask-todos-los-banos.jpg`,   kind: "info" },
-    "todos-los-closets": { title: "TODOS LOS CLOSETS", mask: `${APT}-mask-todos-los-closets.jpg`, kind: "info" },
-    "lavanderia-y-cuarto-muchacha": { title: "LAVANDERÍA Y CUARTO MUCHACHA", mask: `${APT}-mask-lavanderia-y-cuarto-muchacha.jpg`, kind: "info" },
-  };
+const detailPanel = document.getElementById("detailPanel");
+const detailBack = document.getElementById("detailBack");
+const detailTitle = document.getElementById("detailTitle");
+const detailHeroImg = document.getElementById("detailHeroImg");
+const detailText = document.getElementById("detailText");
+const detailGallery = document.getElementById("detailGallery");
+const detailLoading = document.getElementById("detailLoading");
+const heroHint = document.getElementById("heroHint");
 
-  // ====== DOM ======
-  const overlay = document.getElementById("overlay");
-  const hud = document.getElementById("hud");
-  const hudTitle = document.getElementById("hudTitle");
-  const hudSub = document.getElementById("hudSub");
+const viewerPanel = document.getElementById("viewerPanel");
+const viewerBack = document.getElementById("viewerBack");
+const viewerTitle = document.getElementById("viewerTitle");
+const viewerImg = document.getElementById("viewerImg");
 
-  const btnAllPhotos = document.getElementById("btnAllPhotos");
+const ASSET_DIR = "./assets/apto-02/";
+const APTO_PREFIX = "apto-02-";
+const APTO_NAME = (document.body.dataset.aptoName || "APARTAMENTO").trim();
 
-  const galleryPanel = document.getElementById("galleryPanel");
-  const galleryBack = document.getElementById("galleryBack");
-  const galleryTitle = document.getElementById("galleryTitle");
-  const galleryCards = document.getElementById("galleryCards");
+galleryTitle.textContent = APTO_NAME;
 
-  const detailPanel = document.getElementById("detailPanel");
-  const detailBack = document.getElementById("detailBack");
-  const detailTitle = document.getElementById("detailTitle");
-  const detailHeroImg = document.getElementById("detailHeroImg");
-  const heroHint = document.getElementById("heroHint");
-  const detailText = document.getElementById("detailText");
-  const detailGallery = document.getElementById("detailGallery");
-  const detailLoading = document.getElementById("detailLoading");
+const AREAS = {
+  // DETALLE (abre detalle)
+  "cocina-comedor": { title: "COCINA / COMEDOR", mask: "apto-02-mask-cocina-comedor.jpg", kind: "detail" },
+  "sala":           { title: "SALA",            mask: "apto-02-mask-sala.jpg",           kind: "detail" },
+  "terraza":        { title: "TERRAZA",         mask: "apto-02-mask-terraza.jpg",        kind: "detail" },
+  "master-bedroom": { title: "MASTER BEDROOM",  mask: "apto-02-mask-master-bedroom.jpg", kind: "detail" },
+  "habitacion-2":   { title: "HABITACIÓN 2",    mask: "apto-02-mask-habitacion-2.jpg",   kind: "detail" },
+  "habitacion-3":   { title: "HABITACIÓN 3",    mask: "apto-02-mask-habitacion-3.jpg",   kind: "detail" },
 
-  const viewerPanel = document.getElementById("viewerPanel");
-  const viewerBack = document.getElementById("viewerBack");
-  const viewerTitle = document.getElementById("viewerTitle");
-  const viewerImg = document.getElementById("viewerImg");
+  // INFORMATIVO (solo HUD)
+  "cubo-de-luz": { title: "CUBO DE ILUMINACIÓN", mask: "apto-02-mask-cubo-de-luz.jpg", kind: "info" },
+  "elevador":    { title: "ELEVADOR",            mask: "apto-02-mask-elevador.jpg",     kind: "info" },
+  "gradas":      { title: "GRADAS",              mask: "apto-02-mask-gradas.jpg",       kind: "info" },
+  "todos-los-banos":   { title: "TODOS LOS BAÑOS",   mask: "apto-02-mask-todos-los-banos.jpg",   kind: "info" },
+  "todos-los-closets": { title: "TODOS LOS CLOSETS", mask: "apto-02-mask-todos-los-closets.jpg", kind: "info" },
+  "lavanderia-y-cuarto-muchacha": { title: "LAVANDERÍA Y CUARTO MUCHACHA", mask: "apto-02-mask-lavanderia-y-cuarto-muchacha.jpg", kind: "info" },
+};
 
-  // ====== helpers seguros ======
-  const qs = (sel) => document.querySelector(sel);
-  const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+// Preload masks
+Object.values(AREAS).forEach(a => { const i = new Image(); i.src = ASSET_DIR + a.mask; });
 
-  function setPanel(panel, open) {
-    if (!panel) return;
-    panel.setAttribute("aria-hidden", open ? "false" : "true");
-    panel.classList.toggle("is-open", !!open);
-  }
+const canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+let selectedArea = null;
+let currentDetailKey = null;
+let currentHeroSrc = null;
 
-  function setHudIdle(isIdle) {
-    if (!hud) return;
-    hud.classList.toggle("is-idle", !!isIdle);
-    hud.classList.toggle("is-active", !isIdle);
-  }
+function setHudState(state){
+  hud.classList.remove("is-idle","is-active");
+  if(state) hud.classList.add(state);
+}
+function setHud(title, sub){
+  hudTitle.textContent = title || "";
+  hudSub.textContent = sub || "";
+}
 
-  async function headOk(url) {
-    try {
-      const r = await fetch(url, { method: "HEAD", cache: "no-store" });
-      return r.ok;
-    } catch (e) {
-      return false;
-    }
-  }
+function showArea(key){
+  const a = AREAS[key];
+  if(!a) return;
 
-  function imgUrl(areaKey, i) {
-    return `${ASSETS}${APT}-${areaKey}-${i}.jpg`;
-  }
+  overlay.src = ASSET_DIR + a.mask;
+  overlay.style.opacity = "1";
 
-  async function firstExistingPhoto(areaKey, max = 20) {
-    for (let i = 1; i <= max; i++) {
-      const u = imgUrl(areaKey, i);
-      // HEAD para no bajar imagen completa
-      if (await headOk(u)) return u;
-    }
-    return null;
-  }
-
-  async function listPhotos(areaKey, max = 50) {
-    const out = [];
-    for (let i = 1; i <= max; i++) {
-      const u = imgUrl(areaKey, i);
-      if (!(await headOk(u))) break;
-      out.push(u);
-    }
-    return out;
-  }
-
-  async function loadDocxHtml(areaKey) {
-    const docx = `${ASSETS}${APT}-${areaKey}-txt.docx`;
-    // si no existe, devolver vacío
-    if (!(await headOk(docx))) return "";
-    try {
-      const res = await fetch(docx, { cache: "no-store" });
-      const ab = await res.arrayBuffer();
-      if (!window.mammoth || !window.mammoth.convertToHtml) return "";
-      const result = await window.mammoth.convertToHtml({ arrayBuffer: ab });
-      return result.value || "";
-    } catch (e) {
-      return "";
-    }
-  }
-
-  function setOverlaySrc(src) {
-    if (!overlay) return;
-    overlay.src = src;
-    overlay.style.opacity = src && src !== BASE_IMG ? "1" : "0";
-  }
-
-  function resetOverlay() {
-    setOverlaySrc(BASE_IMG);
-    if (overlay) overlay.style.opacity = "0";
-  }
-
-  // ====== HOVER: mostrar masks ======
-  async function onHover(areaKey) {
-    const cfg = AREAS[areaKey];
-    if (!cfg) return;
-
-    if (hudTitle) hudTitle.textContent = cfg.title;
-    if (hudSub) hudSub.textContent = cfg.kind === "detail" ? "Tap / click para ver detalle" : "Tap / click para ver info";
-    setHudIdle(false);
-
-    const maskUrl = `${ASSETS}${cfg.mask}`;
-    if (await headOk(maskUrl)) {
-      setOverlaySrc(maskUrl);
-    } else {
-      // si falta la máscara, no rompas: solo quedate en base
-      resetOverlay();
-    }
-  }
-
-  function onLeave() {
-    if (hudTitle) hudTitle.textContent = "PASA EL MOUSE POR UN ÁREA";
-    if (hudSub) hudSub.textContent = "Tap / click para ver detalle";
-    setHudIdle(true);
-    resetOverlay();
-  }
-
-  // ====== DETAIL / INFO ======
-  async function openDetail(areaKey) {
-    const cfg = AREAS[areaKey];
-    if (!cfg) return;
-
-    setPanel(galleryPanel, false);
-    setPanel(viewerPanel, false);
-    setPanel(detailPanel, true);
-
-    if (detailTitle) detailTitle.textContent = cfg.title;
-    if (detailHeroImg) detailHeroImg.src = "";
-    if (detailText) detailText.innerHTML = "";
-    if (detailGallery) detailGallery.innerHTML = "";
-    if (detailLoading) detailLoading.hidden = false;
-
-    const [html, photos] = await Promise.all([
-      loadDocxHtml(areaKey),
-      listPhotos(areaKey, 50),
-    ]);
-
-    if (detailText) detailText.innerHTML = html || "";
-
-    if (photos.length) {
-      if (detailHeroImg) detailHeroImg.src = photos[0];
-
-      // thumbs
-      for (const u of photos) {
-        const t = document.createElement("img");
-        t.src = u;
-        t.alt = cfg.title;
-        t.loading = "lazy";
-        t.addEventListener("click", () => openViewer(cfg.title, u));
-        detailGallery.appendChild(t);
-      }
-
-      // hero click
-      if (heroHint) heroHint.onclick = () => openViewer(cfg.title, photos[0]);
-      if (detailHeroImg) detailHeroImg.onclick = () => openViewer(cfg.title, photos[0]);
-    }
-
-    if (detailLoading) detailLoading.hidden = true;
-  }
-
-  async function openInfo(areaKey) {
-    const cfg = AREAS[areaKey];
-    if (!cfg) return;
-
-    // info usa el mismo panel detalle (sin necesidad de fotos)
-    setPanel(galleryPanel, false);
-    setPanel(viewerPanel, false);
-    setPanel(detailPanel, true);
-
-    if (detailTitle) detailTitle.textContent = cfg.title;
-    if (detailHeroImg) detailHeroImg.src = "";
-    if (detailGallery) detailGallery.innerHTML = "";
-    if (detailLoading) detailLoading.hidden = false;
-
-    const html = await loadDocxHtml(areaKey);
-    if (detailText) detailText.innerHTML = html || "";
-
-    if (detailLoading) detailLoading.hidden = true;
-  }
-
-  function openViewer(title, url) {
-    setPanel(detailPanel, false);
-    setPanel(galleryPanel, false);
-    setPanel(viewerPanel, true);
-
-    if (viewerTitle) viewerTitle.textContent = title || "FOTO";
-    if (viewerImg) viewerImg.src = url;
-  }
-
-  // ====== TODAS LAS FOTOS ======
-  async function openAllPhotos() {
-    setPanel(detailPanel, false);
-    setPanel(viewerPanel, false);
-    setPanel(galleryPanel, true);
-
-    if (galleryTitle) galleryTitle.textContent = document.body.dataset.aptoName || "APARTAMENTO";
-    if (!galleryCards) return;
-
-    galleryCards.innerHTML = "";
-
-    // Mostrar primero las áreas "detail"
-    const keys = Object.keys(AREAS).filter(k => AREAS[k].kind === "detail");
-
-    for (const k of keys) {
-      const cfg = AREAS[k];
-      const cover = await firstExistingPhoto(k, 20);
-
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "card";
-      card.style.textAlign = "left";
-
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.alt = cfg.title;
-      img.src = cover || BASE_IMG;
-
-      const meta = document.createElement("div");
-      meta.className = "cardMeta";
-
-      const h = document.createElement("div");
-      h.className = "cardTitle";
-      h.textContent = cfg.title;
-
-      const s = document.createElement("div");
-      s.className = "cardSub";
-      s.textContent = cover ? "" : "Sin fotos aún";
-
-      meta.appendChild(h);
-      meta.appendChild(s);
-
-      card.appendChild(img);
-      card.appendChild(meta);
-
-      card.addEventListener("click", () => openDetail(k));
-      galleryCards.appendChild(card);
-    }
-  }
-
-  // ====== bind events ======
-  function bind() {
-    // overlay init
-    resetOverlay();
-    setHudIdle(true);
-
-    // ====== RESET PANELS (arranque limpio) ======
-    setPanel(galleryPanel, false);
-    setPanel(detailPanel, false);
-    setPanel(viewerPanel, false);
-
-    // hover/click hotspots
-    qsa("[data-area]").forEach(el => {
-      const areaKey = el.dataset.area;
-      el.addEventListener("mouseenter", () => onHover(areaKey));
-      el.addEventListener("mouseleave", onLeave);
-      el.addEventListener("focus", () => onHover(areaKey));
-      el.addEventListener("blur", onLeave);
-
-      el.addEventListener("click", async () => {
-        const cfg = AREAS[areaKey];
-        if (!cfg) return;
-        if (cfg.kind === "detail") await openDetail(areaKey);
-        else await openInfo(areaKey);
-      });
-    });
-
-    // botones
-    if (btnAllPhotos) btnAllPhotos.addEventListener("click", openAllPhotos);
-
-    if (galleryBack) galleryBack.addEventListener("click", () => {
-      setPanel(galleryPanel, false);
-    });
-
-    if (detailBack) detailBack.addEventListener("click", () => {
-      setPanel(detailPanel, false);
-    });
-
-    if (viewerBack) viewerBack.addEventListener("click", () => {
-      setPanel(viewerPanel, false);
-      setPanel(detailPanel, true);
-    });
-  }
-
-  // DOM ready
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bind);
+  setHudState("is-active");
+  if(a.kind === "detail"){
+    setHud(a.title, "Tap / click para ver detalle");
   } else {
-    bind();
+    setHud(a.title, "");
   }
+}
+
+function clearArea(){
+  overlay.style.opacity = "0";
+  selectedArea = null;
+  setHudState("is-idle");
+  setHud("PASA EL MOUSE POR UN ÁREA", "Tap / click para ver detalle");
+}
+
+function openPanel(panel){
+  panel.classList.add("is-open");
+  panel.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+function closePanel(panel){
+  panel.classList.remove("is-open");
+  panel.setAttribute("aria-hidden", "true");
+  // Si no queda ninguna abierta, re-habilitar scroll body
+  const anyOpen = document.querySelector(".panel.is-open");
+  if(!anyOpen) document.body.classList.remove("modal-open");
+}
+
+async function fileExists(url){
+  try{
+    const r = await fetch(url, { method:"HEAD", cache:"no-store" });
+    return r.ok;
+  }catch(e){
+    return false;
+  }
+}
+
+async function loadImagesForKey(key){
+  // 1 = portada, 2..N = adicionales
+  const list = [];
+  for(let n=1; n<=60; n++){
+    const jpg = `${ASSET_DIR}${APTO_PREFIX}${key}-${n}.jpg`;
+    const jpeg = `${ASSET_DIR}${APTO_PREFIX}${key}-${n}.jpeg`;
+    const png = `${ASSET_DIR}${APTO_PREFIX}${key}-${n}.png`;
+
+    if(await fileExists(jpg)) { list.push(jpg); continue; }
+    if(await fileExists(jpeg)){ list.push(jpeg); continue; }
+    if(await fileExists(png)) { list.push(png); continue; }
+
+    if(n === 1) break; // si no hay portada, no insistir
+    break; // para adicionales, paramos al primer hueco
+  }
+  return list;
+}
+
+async function loadDocxHtmlForKey(key){
+  const docxUrl = `${ASSET_DIR}${APTO_PREFIX}${key}-txt.docx`;
+  if(!(await fileExists(docxUrl))){
+    return `<p style="opacity:.85;color:#cbd5e1">No hay texto todavía. Subí el Word: <b>${APTO_PREFIX}${key}-txt.docx</b></p>`;
+  }
+
+  try{
+    const res = await fetch(docxUrl, { cache:"no-store" });
+    const arrayBuffer = await res.arrayBuffer();
+    const out = await window.mammoth.convertToHtml({ arrayBuffer });
+    // out.value ya es HTML con <ul><li> etc
+    return out.value || "";
+  }catch(e){
+    return `<p style="opacity:.85;color:#cbd5e1">Error leyendo el Word. Verificá el archivo: <b>${APTO_PREFIX}${key}-txt.docx</b></p>`;
+  }
+}
+
+function openViewer(title, imgSrc){
+  viewerTitle.textContent = title || "FOTO";
+  viewerImg.src = imgSrc;
+  openPanel(viewerPanel);
+}
+
+async function openDetail(key, titleOverride){
+  const a = AREAS[key];
+  if(!a) return;
+  if(a.kind !== "detail") return;
+
+  currentDetailKey = key;
+  detailTitle.textContent = titleOverride || a.title;
+
+  detailLoading.hidden = false;
+  detailText.innerHTML = "";
+  detailGallery.innerHTML = "";
+  detailHeroImg.removeAttribute("src");
+  currentHeroSrc = null;
+
+  openPanel(detailPanel);
+
+  const imgs = await loadImagesForKey(key);
+  const docxHtml = await loadDocxHtmlForKey(key);
+
+  // Texto (IMPORTANTE: innerHTML para que salgan bullets)
+  detailText.innerHTML = docxHtml;
+
+  // Portada
+  if(imgs.length){
+    currentHeroSrc = imgs[0];
+    detailHeroImg.src = imgs[0];
+    detailHeroImg.alt = detailTitle.textContent;
+  } else {
+    detailHeroImg.alt = "Sin fotos todavía";
+  }
+
+  // Galería (2..N)
+  const extras = imgs.slice(1);
+  extras.forEach((src, idx) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-label", `Foto ${idx+2}`);
+    const im = document.createElement("img");
+    im.src = src;
+    im.alt = `Foto ${idx+2}`;
+    b.appendChild(im);
+    b.addEventListener("click", () => openViewer(detailTitle.textContent, src));
+    detailGallery.appendChild(b);
+  });
+
+  detailLoading.hidden = true;
+}
+
+function openGallery(){
+  galleryCards.innerHTML = "";
+  Object.entries(AREAS).forEach(([key, a]) => {
+    if(a.kind !== "detail") return;
+
+    const row = document.createElement("div");
+    row.className = "cardRow";
+    row.tabIndex = 0;
+
+    const cover = document.createElement("img");
+    // portada: apto-02-<key>-1.(jpg|jpeg|png) => intentamos jpg primero
+    cover.src = `${ASSET_DIR}${APTO_PREFIX}${key}-1.jpg`;
+    cover.alt = a.title;
+
+    const right = document.createElement("div");
+    const t = document.createElement("div");
+    t.className = "t";
+    t.textContent = a.title;
+
+    const s = document.createElement("div");
+    s.className = "s";
+    s.textContent = "Click para ver detalle";
+
+    right.appendChild(t);
+    right.appendChild(s);
+
+    row.appendChild(cover);
+    row.appendChild(right);
+
+    row.addEventListener("click", () => openDetail(key, a.title));
+    row.addEventListener("keydown", (e) => { if(e.key === "Enter") openDetail(key, a.title); });
+
+    galleryCards.appendChild(row);
+  });
+
+  openPanel(galleryPanel);
+}
+
+function onSpotActivate(key){
+  const a = AREAS[key];
+  if(!a) return;
+
+  if(a.kind === "detail"){
+    openDetail(key, a.title);
+  }
+}
+
+// Hotspots behavior
+document.querySelectorAll(".spot").forEach(btn => {
+  const key = btn.dataset.area;
+
+  if(canHover){
+    btn.addEventListener("mouseenter", () => showArea(key));
+    btn.addEventListener("mouseleave", clearArea);
+    btn.addEventListener("click", () => onSpotActivate(key));
+    return;
+  }
+
+  // touch: tap 1 preview, tap 2 open detail (si aplica)
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(selectedArea !== key){
+      selectedArea = key;
+      showArea(key);
+      return;
+    }
+    onSpotActivate(key);
+  });
+});
+
+document.addEventListener("click", (e) => {
+  if(canHover) return;
+  if(e.target && e.target.closest && e.target.closest(".spot")) return;
+  clearArea();
+});
+
+// Buttons
+btnAllPhotos.addEventListener("click", () => openGallery());
+
+// Back
+galleryBack.addEventListener("click", () => closePanel(galleryPanel));
+detailBack.addEventListener("click", () => closePanel(detailPanel));
+viewerBack.addEventListener("click", () => closePanel(viewerPanel));
+
+// Click para ampliar (portada)
+heroHint.addEventListener("click", () => {
+  if(currentHeroSrc) openViewer(detailTitle.textContent, currentHeroSrc);
+});
+detailHeroImg.addEventListener("click", () => {
+  if(currentHeroSrc) openViewer(detailTitle.textContent, currentHeroSrc);
+});
+
+// init
+setHudState("is-idle");
+setHud("PASA EL MOUSE POR UN ÁREA", "Tap / click para ver detalle");
+
+/* TB_PDF_BUTTONS */
+(function(){
+  try{
+    const ASSET_DIR_LOCAL = (typeof ASSET_DIR !== "undefined") ? ASSET_DIR : "./assets/apto-02/";
+    const planoBtn = document.getElementById("btnPlanoPrecio");
+    const ubiBtn   = document.getElementById("btnUbicacion");
+
+    function openPdfLocal(name){
+      window.open(ASSET_DIR_LOCAL + name, "_blank", "noopener,noreferrer");
+    }
+
+    if(planoBtn){
+      planoBtn.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        openPdfLocal("apto-02-plano.pdf");
+      });
+    }
+    if(ubiBtn){
+      ubiBtn.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        openPdfLocal("apto-02-ubicacion.pdf");
+      });
+    }
+  }catch(err){}
 })();

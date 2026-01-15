@@ -322,39 +322,3 @@ body.debug .spot{
   transform:translateY(2px) scale(.99);
   box-shadow: 0 8px 18px rgba(0,0,0,.35) inset;
 }
-
-/* HOTFIX BASE VISIBLE (mantener) */
-.img.base{
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-}
-
-/* === TB FIX (hover click + gallery display) === */
-#overlay{ pointer-events:none !important; }
-.spot{ z-index: 5 !important; }
-
-#galleryPanel .panelBody{
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-#galleryCards{
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
-  gap: 14px !important;
-}
-
-#galleryCards .cardRow{
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  gap: 10px !important;
-}
-
-#galleryCards .cardRow img{
-  width: 100% !important;
-  height: 180px !important;
-  object-fit: cover !important;
-  border-radius: 12px !important;
-  display:block !important;
-}
